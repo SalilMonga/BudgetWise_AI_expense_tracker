@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { FaCheck, FaTimes } from "react-icons/fa";
 
 const TransactionsPage = () => {
   const [transactions, setTransactions] = useState([
@@ -130,7 +131,7 @@ const TransactionsPage = () => {
   };
 
   return (
-    <div className="h-screen flex items-center justify-center bg-black">
+    <div className="min-h-screen flex flex-col items-center justify-start bg-black overflow-auto">
       {/* Floating Transactions Widget */}
       <div className="bg-gray-900/80 backdrop-blur-md p-6 rounded-xl shadow-2xl w-[80vw] max-w-4xl border border-gray-700">
         {/* Title & Search */}
@@ -139,7 +140,12 @@ const TransactionsPage = () => {
           <div className="flex gap-3">
             <button
               className="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-full transition"
-              onClick={() => setIsAdding(true)}
+              onClick={() => {
+                setIsAdding(true);
+                setTimeout(() => {
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }, 100);
+              }}
             >
               +
             </button>
@@ -172,7 +178,7 @@ const TransactionsPage = () => {
                   <td className="p-3">
                     <input
                       type="text"
-                      className="bg-gray-800 p-2 rounded-md w-full text-white text-sm"
+                      className="bg-gray-800 p-2 rounded-md w-full text-white text-xs"
                       placeholder="Enter description"
                       value={newTransaction.description}
                       onChange={(e) =>
@@ -219,19 +225,17 @@ const TransactionsPage = () => {
                   <td className="p-3">
                     <span className="text-yellow-400 text-sm">● Pending</span>
                   </td>
-                  <td className="p-3 flex gap-2">
-                    <button
-                      className="bg-green-500 text-white px-3 py-1 text-sm rounded-md"
-                      onClick={() => handleSaveTransaction()}
-                    >
-                      ✔ Save
-                    </button>
-                    <button
-                      className="bg-red-500 text-white px-3 py-1 text-sm rounded-md"
-                      onClick={() => setIsAdding(false)}
-                    >
-                      ✖ Cancel
-                    </button>
+                  <td className="p-3">
+                    <div className="flex items-center gap-4">
+                      <FaCheck
+                        className="text-green-500 text-l cursor-pointer hover:text-green-300 transition inline-flex"
+                        onClick={() => handleSaveTransaction()}
+                      />
+                      <FaTimes
+                        className="text-red-500 text-l cursor-pointer hover:text-red-400 transition inline-flex"
+                        onClick={() => setIsAdding(false)}
+                      />
+                    </div>
                   </td>
                 </tr>
               )}
