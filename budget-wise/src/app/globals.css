@@ -6,11 +6,13 @@
 }
 
 :root {
-  --primary-purple: #a855f7; /* Adjust if needed */
-  --background-dark: #0f0f0f;
-  --background-gray: #1a1a1a;
-  --text-light: #e5e7eb;
-  --text-dark: #9ca3af;
+  --primary-purple: #7f5af0;
+
+  --background: #ffffff;
+  --background-gray: #f5f5f5;
+  --text-light: #111827;
+  --text-dark: #6b7280;
+
   --green: #16a34a;
   --red: #dc2626;
   --yellow: #facc15;
@@ -18,7 +20,9 @@
   --orange: #f97316;
 }
 
-body {
-  background-color: var(--background-dark);
-  color: var(--text-light);
+html.dark {
+  --background: #0f0f0f;
+  --background-gray: #1a1a1a;
+  --text-light: #e5e7eb;
+  --text-dark: #9ca3af;
 }
