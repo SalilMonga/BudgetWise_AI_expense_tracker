@@ -1,12 +1,16 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: "class", // required for next-themes
-  content: ["./app/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
+  darkMode: "class",
+  content: [
+    "./src/app/**/*.{js,ts,jsx,tsx}",
+    "./src/app/components/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
     extend: {
       colors: {
         primary: "var(--primary-purple)",
-        background: "var(--background-dark)",
+        background: "var(--background)",
+        "background-gray": "var(--background-gray)",
         foreground: "var(--text-light)",
         muted: "var(--text-dark)",
         green: "var(--green)",

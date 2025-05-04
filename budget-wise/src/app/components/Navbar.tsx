@@ -2,16 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import {
-  FaExchangeAlt,
-  FaChartPie,
-  FaWallet,
-  FaSearch,
-  FaBell,
-  FaUser,
-} from "react-icons/fa";
+import { FaSearch, FaBell, FaUser } from "react-icons/fa";
 import { FiCreditCard } from "react-icons/fi";
-import { FaHome } from "react-icons/fa";
 import { useSearchParams } from "next/navigation";
 import ThemeToggle from "./ThemeToggle";
 
@@ -23,13 +15,6 @@ const Navbar = () => {
   const getLinkClasses = (viewName: string) =>
     `px-3 py-2 text-sm font-medium transition-colors duration-150 ${
       currentView === viewName
-        ? "text-primary border-b-2 border-primary"
-        : "text-foreground hover:text-primary"
-    }`;
-
-  const getHomeLinkClasses = () =>
-    `px-3 py-2 text-sm font-medium transition-colors duration-150 ${
-      !currentView
         ? "text-primary border-b-2 border-primary"
         : "text-foreground hover:text-primary"
     }`;
@@ -61,9 +46,9 @@ const Navbar = () => {
             >
               Transactions
             </Link>
-            <Link href="/?view=budget" className={getLinkClasses("budget")}>
+            {/* <Link href="/?view=budget" className={getLinkClasses("budget")}>
               Budget
-            </Link>
+            </Link> */}
             <Link href="/?view=goals" className={getLinkClasses("goals")}>
               Goals
             </Link>

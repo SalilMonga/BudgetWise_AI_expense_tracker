@@ -8,10 +8,4 @@ export interface Transaction {
   color: string;
 }
 
-export interface Goal {
-  id: number;
-  title: string;
-  targetAmount: number;
-  savedAmount: number;
-  category?: string;
-}
+export * from "./goals";

@@ -20,6 +20,12 @@
   --orange: #f97316;
 }
 
+html,
+body {
+  background-color: var(--background) !important;
+  transition: background-color 0.3s ease-in-out;
+}
+
 html.dark {
   --background: #0f0f0f;
   --background-gray: #1a1a1a;

@@ -30,7 +30,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`
+    ${geistSans.variable} ${geistMono.variable}
+    antialiased
+    bg-[var(--background)]
+    transition-colors duration-300 ease-in-out
+  `}
       >
         <Providers>
           <Navbar />

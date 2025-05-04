@@ -7,7 +7,6 @@ const transactions = [
     category: "Food",
     amount: -82.5,
     status: "Completed",
-    color: "purple",
   },
   {
     date: "Jan 19, 2024",
@@ -15,7 +14,6 @@ const transactions = [
     category: "Income",
     amount: 3000,
     status: "Completed",
-    color: "green",
   },
   {
     date: "Jan 18, 2024",
@@ -23,7 +21,6 @@ const transactions = [
     category: "Bills",
     amount: -125,
     status: "Pending",
-    color: "red",
   },
   {
     date: "Jan 17, 2024",
@@ -31,7 +28,6 @@ const transactions = [
     category: "Food",
     amount: -4.5,
     status: "Completed",
-    color: "purple",
   },
   {
     date: "Jan 16, 2024",
@@ -39,7 +35,6 @@ const transactions = [
     category: "Transport",
     amount: -45,
     status: "Completed",
-    color: "blue",
   },
   {
     date: "Jan 15, 2024",
@@ -47,7 +42,6 @@ const transactions = [
     category: "Shopping",
     amount: -129.99,
     status: "Completed",
-    color: "orange",
   },
   {
     date: "Jan 14, 2024",
@@ -55,7 +49,6 @@ const transactions = [
     category: "Income",
     amount: 850,
     status: "Completed",
-    color: "green",
   },
   {
     date: "Jan 13, 2024",
@@ -63,7 +56,6 @@ const transactions = [
     category: "Bills",
     amount: -79.99,
     status: "Pending",
-    color: "red",
   },
   {
     date: "Jan 12, 2024",
@@ -71,7 +63,6 @@ const transactions = [
     category: "Food",
     amount: -68.5,
     status: "Completed",
-    color: "purple",
   },
   {
     date: "Jan 11, 2024",
@@ -79,7 +70,6 @@ const transactions = [
     category: "Transport",
     amount: -25,
     status: "Completed",
-    color: "blue",
   },
 ];
 
