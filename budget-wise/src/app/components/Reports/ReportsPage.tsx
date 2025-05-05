@@ -10,7 +10,11 @@ import {
   darkCategoryColorMap,
 } from "@/lib/categoryColors";
 
-const ReportsPage = () => {
+interface ReportsPageProps {
+  isWidget?: boolean;
+}
+
+const ReportsPage = ({ isWidget = false }: ReportsPageProps) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
@@ -48,48 +52,53 @@ const ReportsPage = () => {
 
   return (
     <div className="min-h-screen bg-[var(--background-gray)] text-[var(--text-light)]">
-      <h2 className="text-2xl font-bold mb-6">Spending Reports</h2>
-
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* 📊 Bar Chart */}
-        <div className="bg-[var(--background)] p-4 rounded-lg shadow-md h-[450px]">
-          <h3 className="text-lg font-semibold mb-2">Spending by Category</h3>
-          <div className="h-[400px]">
-            <ResponsiveBar
-              data={barData}
-              keys={["amount"]}
-              indexBy="category"
-              margin={{ top: 20, right: 30, bottom: 50, left: 60 }}
-              padding={0.3}
-              colors={{ datum: "data.color" }}
-              theme={{
-                // textColor: "var(--text-light)",
-                axis: {
-                  ticks: {
-                    text: { fill: "var(--text-light)" },
-                  },
-                  legend: {
-                    text: { fill: "var(--text-light)" },
-                  },
-                },
-                tooltip: {
-                  container: {
-                    background: "var(--background-gray)",
-                    color: "var(--text-light)",
-                  },
-                },
-              }}
-              axisBottom={{
-                tickRotation: -20,
-              }}
-              axisLeft={{
-                legend: "Amount",
-                legendPosition: "middle",
-                legendOffset: -40,
-              }}
-            />
-          </div>
-        </div>
+        {!isWidget && (
+          <>
+            <h2 className="text-2xl font-bold mb-6">Spending Reports</h2>
+            <div className="bg-[var(--background)] p-4 rounded-lg shadow-md h-[450px]">
+              <h3 className="text-lg font-semibold mb-2">
+                Spending by Category
+              </h3>
+              <div className="h-[400px]">
+                <ResponsiveBar
+                  data={barData}
+                  keys={["amount"]}
+                  indexBy="category"
+                  margin={{ top: 20, right: 30, bottom: 50, left: 60 }}
+                  padding={0.3}
+                  colors={{ datum: "data.color" }}
+                  theme={{
+                    // textColor: "var(--text-light)",
+                    axis: {
+                      ticks: {
+                        text: { fill: "var(--text-light)" },
+                      },
+                      legend: {
+                        text: { fill: "var(--text-light)" },
+                      },
+                    },
+                    tooltip: {
+                      container: {
+                        background: "var(--background-gray)",
+                        color: "var(--text-light)",
+                      },
+                    },
+                  }}
+                  axisBottom={{
+                    tickRotation: -20,
+                  }}
+                  axisLeft={{
+                    legend: "Amount",
+                    legendPosition: "middle",
+                    legendOffset: -40,
+                  }}
+                />
+              </div>
+            </div>
+          </>
+        )}
 
         {/* 🥧 Donut Chart */}
         <div className="bg-[var(--background)] p-4 rounded-lg shadow-md h-[450px]">

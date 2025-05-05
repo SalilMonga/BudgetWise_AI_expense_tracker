@@ -1,5 +1,4 @@
-import CentralRouter from "./components/CentralRouter";
-// import TransactionsPage from "./components/TransactionPage/TransactionPage";
+import CentralRouter from "./components/common/CentralRouter";
 
 export default function Home() {
   return <CentralRouter />;

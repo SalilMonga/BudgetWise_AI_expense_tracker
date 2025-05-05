@@ -6,20 +6,20 @@ import { useSearchParams } from "next/navigation";
 
 // Dynamically import your views
 const TransactionPage = dynamic(
-  () => import("./TransactionPage/TransactionPage"),
+  () => import("../TransactionPage/TransactionPage"),
   {
     loading: () => <p>Loading Transactions...</p>,
   }
 );
 
-// const DashboardView = dynamic(() => import("./dashboard/DashboardPage"), {
-//   loading: () => <p>Loading Dashboard...</p>,
-// });
-const GoalsPage = dynamic(() => import("./Goals/GoalsPage"), {
+const DashboardView = dynamic(() => import("../Dashboard/DashboardPage"), {
+  loading: () => <p>Loading Dashboard...</p>,
+});
+const GoalsPage = dynamic(() => import("../Goals/GoalsPage"), {
   loading: () => <p>Loading Goals...</p>,
 });
 
-const ReportsView = dynamic(() => import("./Reports/ReportsPage"), {
+const ReportsView = dynamic(() => import("../Reports/ReportsPage"), {
   loading: () => <p>Loading Reports...</p>,
 });
 
@@ -31,12 +31,12 @@ export default function CentralRouter() {
   switch (view) {
     case "transactions":
       return <TransactionPage />;
-    // case "dashboard":
-    //   return <DashboardView />;
+    case "dashboard":
+      return <DashboardView />;
     case "goals":
       return <GoalsPage />;
     case "reports":
-      return <ReportsView />;
+      return <ReportsView isWidget={false} />;
     default:
       // Fallback or default homepage content
       return (
