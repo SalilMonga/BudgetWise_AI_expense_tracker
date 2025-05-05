@@ -72,7 +72,7 @@ export default function GoalsView() {
         </h2>
         <button
           onClick={() => setShowAddGoal(true)}
-          className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 rounded-full shadow-md transition"
+          className="bg-[var(--fill)] hover:bg-[var(--fill-hover)] text-white px-6 py-2 rounded-full shadow-md transition"
         >
           + Add Goal
         </button>

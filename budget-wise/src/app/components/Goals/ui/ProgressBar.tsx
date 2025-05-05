@@ -10,9 +10,13 @@ export default function GoalProgressBar({ savedAmount, targetAmount }: Props) {
     targetAmount > 0 ? Math.min((savedAmount / targetAmount) * 100, 100) : 0;
 
   return (
-    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
+    <div className="w-full bg-[var(--background)] border border-[var(--text-dark)] rounded-full h-3 overflow-hidden">
       <div
-        className="h-full bg-purple-500 transition-all duration-300 ease-in-out"
+        className="
+          h-full
+          bg-[var(--fill)]
+          transition-all duration-300 ease-in-out
+        "
         style={{ width: `${pct}%` }}
       />
     </div>
