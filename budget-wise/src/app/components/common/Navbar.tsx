@@ -29,7 +29,7 @@ const Navbar = () => {
             className="flex items-center gap-2 text-primary font-semibold text-lg"
           >
             <FiCreditCard className="h-5 w-5" />
-            FinanceFlow
+            BudgetWise
           </Link>
 
           {/* Desktop Navigation */}

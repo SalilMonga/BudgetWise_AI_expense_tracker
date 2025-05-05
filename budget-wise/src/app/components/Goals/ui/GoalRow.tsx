@@ -2,7 +2,7 @@
 
 import { FaThumbtack, FaWallet } from "react-icons/fa";
 import { Goal } from "@/types";
-import GoalProgressBar from "./ProgressBar";
+import ProgressBar from "../../common/ProgressBar";
 
 interface Props {
   goal: Goal;
@@ -55,9 +55,10 @@ export default function GoalRow({ goal, onAddFunds, onPin }: Props) {
       </div>
 
       {/* Progress bar */}
-      <GoalProgressBar
-        savedAmount={goal.savedAmount}
-        targetAmount={goal.targetAmount}
+      <ProgressBar
+        value={goal.savedAmount}
+        max={goal.targetAmount}
+        showPercentage
       />
     </div>
   );
