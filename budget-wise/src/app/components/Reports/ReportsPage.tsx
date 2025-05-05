@@ -4,9 +4,16 @@ import { ResponsiveBar } from "@nivo/bar";
 import { ResponsivePie } from "@nivo/pie";
 import { useEffect, useState } from "react";
 import { Transaction } from "../../../types";
+import { useTheme } from "next-themes";
+import {
+  lightCategoryColorMap,
+  darkCategoryColorMap,
+} from "@/lib/categoryColors";
 
 const ReportsPage = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
 
   useEffect(() => {
     fetch("/api/transactions")
@@ -24,15 +31,19 @@ const ReportsPage = () => {
     }
   });
 
+  const colorMap = isDark ? darkCategoryColorMap : lightCategoryColorMap;
+
   const barData = Object.entries(categoryMap).map(([category, value]) => ({
     category,
     amount: value,
+    color: colorMap[category] || "#999999",
   }));
 
   const pieData = Object.entries(categoryMap).map(([category, value]) => ({
     id: category,
     label: category,
     value,
+    color: colorMap[category] || "#999999",
   }));
 
   return (
@@ -49,7 +60,7 @@ const ReportsPage = () => {
             indexBy="category"
             margin={{ top: 20, right: 30, bottom: 50, left: 60 }}
             padding={0.3}
-            // colors={{ scheme: "purpleRed" }}
+            colors={{ datum: "data.color" }}
             theme={{
               // textColor: "var(--text-light)",
               axis: {
@@ -88,7 +99,7 @@ const ReportsPage = () => {
             padAngle={1}
             cornerRadius={4}
             activeOuterRadiusOffset={8}
-            // colors={{ scheme: "purpleRed" }}
+            colors={{ datum: "data.color" }}
             theme={{
               labels: {
                 text: {

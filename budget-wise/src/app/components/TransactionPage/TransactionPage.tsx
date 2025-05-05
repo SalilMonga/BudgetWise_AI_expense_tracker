@@ -1,6 +1,11 @@
 "use client";
+import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { FaCheck, FaTimes } from "react-icons/fa";
+import {
+  darkCategoryColorMap,
+  lightCategoryColorMap,
+} from "../../../lib/categoryColors";
 
 interface Transaction {
   id: number;
@@ -9,13 +14,15 @@ interface Transaction {
   category: string;
   amount: number;
   status: "Completed" | "Pending";
-  color: string;
 }
 
 const TransactionsPage = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [search, setSearch] = useState("");
   const [isAdding, setIsAdding] = useState(false);
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
+
   const [newTransaction, setNewTransaction] = useState<Omit<Transaction, "id">>(
     {
       date: new Date().toLocaleDateString("en-US", {
@@ -27,7 +34,6 @@ const TransactionsPage = () => {
       category: "",
       amount: 0,
       status: "Pending",
-      color: "gray",
     }
   );
 
@@ -70,12 +76,13 @@ const TransactionsPage = () => {
         category: "",
         amount: 0,
         status: "Pending",
-        color: "gray",
       });
     } catch (err) {
       console.error(err);
     }
   };
+
+  const colorMap = isDark ? darkCategoryColorMap : lightCategoryColorMap;
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-start bg-[var(--background-gray)] text-[var(--text-light)]">
@@ -86,7 +93,7 @@ const TransactionsPage = () => {
           </h2>
           <div className="flex gap-3">
             <button
-              className="bg-purple-500 hover:bg-purple-600 text-[var(--text-light)] px-4 py-2 rounded-full transition"
+              className="bg-[var(--fill)] text-[var(--text-light)] px-4 py-2 rounded-full transition"
               onClick={() => {
                 setIsAdding(true);
                 setTimeout(() => {
@@ -106,7 +113,6 @@ const TransactionsPage = () => {
         </div>
 
         <div className="overflow-hidden rounded-lg">
-          {/* <div className="bg-[var(--background-gray)] backdrop-blur-md p-6 rounded-xl shadow-2xl w-[80vw] max-w-4xl border border-muted"> */}
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-muted text-[var(--text-dark)]">
@@ -160,11 +166,14 @@ const TransactionsPage = () => {
                       type="number"
                       className="bg-[var(--background)] p-2 rounded-md w-full text-[var(--text-light)] text-sm"
                       placeholder="Amount"
-                      value={newTransaction.amount}
+                      value={
+                        newTransaction.amount === 0 ? "" : newTransaction.amount
+                      }
                       onChange={(e) =>
                         setNewTransaction((prev) => ({
                           ...prev,
-                          amount: Number(e.target.value),
+                          amount:
+                            e.target.value === "" ? 0 : Number(e.target.value),
                         }))
                       }
                     />
@@ -195,9 +204,14 @@ const TransactionsPage = () => {
                   <td className="p-3">{txn.description}</td>
                   <td className="p-3">
                     <span
+                      style={{
+                        backgroundColor:
+                          colorMap[txn.category] ||
+                          (isDark ? "#1f1f1f" : "#e5e5e5"),
+                      }}
                       className={`px-2 py-1 text-xs font-bold rounded-md ${
-                        txn.color ? `bg-${txn.color}-600` : "bg-gray-600"
-                      } text-[var(--text-light)]`}
+                        isDark ? "text-white" : "text-gray-800"
+                      }`}
                     >
                       {txn.category}
                     </span>
@@ -230,6 +244,7 @@ const TransactionsPage = () => {
             </tbody>
           </table>
         </div>
+
         {/* Pagination */}
         <div className="mt-4 flex justify-between items-center text-[var(--text-dark)]">
           <p className="text-sm">Showing 1 to 10 of 50 entries</p>
@@ -239,7 +254,7 @@ const TransactionsPage = () => {
                 key={page}
                 className={`px-3 py-1 text-sm rounded-md ${
                   page === 1
-                    ? "bg-purple-500 text-[var(--text-light)]"
+                    ? "bg-[var(--fill)] text-[var(--text-light)]"
                     : "bg-[var(--background-gray)] text-[var(--text-dark)]"
                 }`}
               >
