@@ -1,29 +1,30 @@
-// src/app/components/ui/BudgetWidget.tsx
+// src/components/Dashboard/ui/BudgetWidget.tsx
 "use client";
 
 import Card from "../../common/Card";
-import GoalProgressBar from "../../Goals/ui/ProgressBar";
+import ProgressBar from "../../common/ProgressBar";
 
 export function BudgetWidget() {
-  // replace these with real data calls
   const totalBudget = 2450;
   const spent = 1850;
+  const remaining = totalBudget - spent;
 
   return (
-    <Card>
+    <Card className="flex flex-col p-4 h-full">
       <h3 className="text-lg font-semibold text-[var(--text-light)]">
         Monthly Budget
       </h3>
       <p className="mt-2 text-2xl font-bold text-[var(--text-light)]">
-        ${totalBudget.toFixed(0)}
+        ${totalBudget}
       </p>
-      <span className="text-sm text-[var(--text-dark)]">
-        {Math.round(((totalBudget - spent) / totalBudget) * 100)}% remaining
-      </span>
-      <div className="mt-4">
-        <GoalProgressBar
-          savedAmount={totalBudget - spent}
-          targetAmount={totalBudget}
+
+      {/* full‑width bar with percentage */}
+      <div className="mt-4 w-full">
+        <ProgressBar
+          value={remaining}
+          max={totalBudget}
+          showPercentage
+          className="w-full"
         />
       </div>
     </Card>

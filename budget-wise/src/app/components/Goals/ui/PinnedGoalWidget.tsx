@@ -4,7 +4,7 @@
 import { useEffect, useState } from "react";
 import { Goal } from "@/types/goals";
 import Card from "../../common/Card";
-import GoalProgressBar from "./ProgressBar";
+import ProgressBar from "../../common/ProgressBar";
 
 export default function PinnedGoalWidget() {
   const [goal, setGoal] = useState<Goal | null>(null);
@@ -28,9 +28,10 @@ export default function PinnedGoalWidget() {
       <p className="text-md font-medium truncate text-[var(--text-light)]">
         {goal.title}
       </p>
-      <GoalProgressBar
-        savedAmount={goal.savedAmount}
-        targetAmount={goal.targetAmount}
+      <ProgressBar
+        value={goal.savedAmount}
+        max={goal.targetAmount}
+        showPercentage
       />
     </Card>
   );
