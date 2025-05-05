@@ -5,7 +5,6 @@ export interface Transaction {
   category: string;
   amount: number;
   status: "Completed" | "Pending";
-  color: string;
 }
 
 export * from "./goals";

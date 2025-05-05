@@ -1,10 +1,12 @@
-// src/app/transactions/page.tsx
 "use client";
 
-import { useTransactions } from "@/hooks/TransactionsData";
 import { useState } from "react";
+
+import Card from "@/app/components/common/Card";
+import { FaCheck, FaTimes } from "react-icons/fa";
 import TransactionsList from "./ui/TransactionsList";
-import Card from "../common/Card";
+import { useTransactions } from "../../../hooks/TransactionsData";
+import { Transaction } from "../../../types";
 
 export default function TransactionsPage() {
   const {
@@ -15,27 +17,187 @@ export default function TransactionsPage() {
     updateTransaction,
     deleteTransaction,
   } = useTransactions();
+  // const { resolvedTheme } = useTheme();
+  // const isDark = resolvedTheme === "dark";
 
+  // search text
   const [search, setSearch] = useState("");
+  // “add‐new” row toggle & draft
   const [isAdding, setAdding] = useState(false);
+  const [draft, setDraft] = useState<Omit<Transaction, "id">>({
+    date: new Date().toLocaleDateString("en-CA"), // ISO YYYY-MM-DD
+    description: "",
+    category: "",
+    amount: 0,
+    status: "Pending",
+  });
 
-  if (isLoading) return <div>Loading…</div>;
-  if (isError) return <div>Error loading transactions.</div>;
+  if (isLoading) return <div className="p-6 text-center">Loading…</div>;
+  if (isError)
+    return (
+      <div className="p-6 text-center text-red-600">
+        Error loading transactions.
+      </div>
+    );
+
+  // filter by description
+  const filtered = transactions.filter((t) =>
+    t.description.toLowerCase().includes(search.toLowerCase())
+  );
+
+  // handlers
+  const startAdd = () => setAdding(true);
+  const cancelAdd = () => {
+    setAdding(false);
+    setDraft({
+      date: new Date().toLocaleDateString("en-CA"),
+      description: "",
+      category: "",
+      amount: 0,
+      status: "Pending",
+    });
+  };
+  const saveAdd = () => {
+    addTransaction(draft);
+    cancelAdd();
+  };
 
   return (
-    <Card className="w-full max-w-5xl mx-auto">
-      <TransactionsList
-        transactions={transactions}
-        isAdding={isAdding}
-        onAdd={(txn) => {
-          setAdding(false);
-          addTransaction(txn);
-        }}
-        onUpdate={updateTransaction}
-        onDelete={deleteTransaction}
-        searchValue={search}
-        onSearch={setSearch}
-      />
+    <Card className="w-full max-w-5xl mx-auto my-8">
+      {/* header + search + “+” */}
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-semibold text-[var(--text-light)]">
+          Transactions
+        </h2>
+        <div className="flex gap-3">
+          <button
+            onClick={startAdd}
+            className="h-8 w-8 flex items-center justify-center rounded-full bg-[var(--fill)] text-white text-lg transition"
+          >
+            +
+          </button>
+          <input
+            type="text"
+            placeholder="Search transactions..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="p-2 bg-[var(--background-gray)] rounded-md text-[var(--text-light)] focus:outline-none"
+          />
+        </div>
+      </div>
+
+      {/* table */}
+      <div className="overflow-hidden rounded-lg">
+        <table className="w-full text-left border-collapse">
+          <thead>
+            <tr className="border-b border-muted text-[var(--text-dark)]">
+              {[
+                "Date",
+                "Description",
+                "Category",
+                "Amount",
+                "Status",
+                "Actions",
+              ].map((h) => (
+                <th key={h} className="p-3">
+                  {h}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {/* add-new row */}
+            {isAdding && (
+              <tr className="border-b border-gray-300">
+                <td className="p-3">{draft.date}</td>
+                <td className="p-3">
+                  <input
+                    type="text"
+                    placeholder="Description"
+                    value={draft.description}
+                    onChange={(e) =>
+                      setDraft((d) => ({ ...d, description: e.target.value }))
+                    }
+                    className="w-full p-2 bg-[var(--background)] rounded-md text-[var(--text-light)]"
+                  />
+                </td>
+                <td className="p-3">
+                  <select
+                    value={draft.category}
+                    onChange={(e) =>
+                      setDraft((d) => ({ ...d, category: e.target.value }))
+                    }
+                    className="w-full p-2 bg-[var(--background)] rounded-md text-[var(--text-light)]"
+                  >
+                    <option value="">Select</option>
+                    {["Food", "Bills", "Transport", "Shopping", "Income"].map(
+                      (c) => (
+                        <option key={c} value={c}>
+                          {c}
+                        </option>
+                      )
+                    )}
+                  </select>
+                </td>
+                <td className="p-3">
+                  <input
+                    type="number"
+                    placeholder="Amount"
+                    value={draft.amount === 0 ? "" : draft.amount}
+                    onChange={(e) => {
+                      const v =
+                        e.target.value === "" ? 0 : Number(e.target.value);
+                      setDraft((d) => ({ ...d, amount: v }));
+                    }}
+                    className="w-full p-2 bg-[var(--background)] rounded-md text-[var(--text-light)]"
+                  />
+                </td>
+                <td className="p-3">
+                  <span className="text-yellow-400 text-sm">● Pending</span>
+                </td>
+                <td className="p-3 flex gap-2">
+                  <FaCheck
+                    onClick={saveAdd}
+                    className="text-green-500 cursor-pointer hover:text-green-300 transition"
+                  />
+                  <FaTimes
+                    onClick={cancelAdd}
+                    className="text-red-500 cursor-pointer hover:text-red-400 transition"
+                  />
+                </td>
+              </tr>
+            )}
+
+            {/* the rest of the rows */}
+            <TransactionsList
+              transactions={filtered}
+              onUpdate={(t) => updateTransaction(t)}
+              onDelete={(id) => deleteTransaction(id)}
+            />
+          </tbody>
+        </table>
+      </div>
+
+      {/* pagination footer */}
+      <div className="mt-4 flex justify-between items-center text-[var(--text-dark)]">
+        <p className="text-sm">
+          Showing {filtered.length} of {transactions.length} transactions
+        </p>
+        <div className="flex space-x-2">
+          {[1, 2, 3, 4, 5].map((p) => (
+            <button
+              key={p}
+              className={`px-3 py-1 text-sm rounded-md ${
+                p === 1
+                  ? "bg-[var(--fill)] text-white"
+                  : "bg-[var(--background-gray)] text-[var(--text-dark)]"
+              }`}
+            >
+              {p}
+            </button>
+          ))}
+        </div>
+      </div>
     </Card>
   );
 }

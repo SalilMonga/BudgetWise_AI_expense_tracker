@@ -1,15 +1,14 @@
 import { useState, useEffect } from "react";
+import { Transaction } from "../types";
 
-export interface APITransaction {
-  id: number;
-  date: string; // ISO: "YYYY-MM-DD"
-  description: string;
-  category: string;
-  amount: number;
-  status: "Completed" | "Pending";
-}
-
-export type Transaction = APITransaction;
+// export interface APITransaction {
+//   id: number;
+//   date: string; // ISO: "YYYY-MM-DD"
+//   description: string;
+//   category: string;
+//   amount: number;
+//   status: "Completed" | "Pending";
+// }
 
 export function useTransactions() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);

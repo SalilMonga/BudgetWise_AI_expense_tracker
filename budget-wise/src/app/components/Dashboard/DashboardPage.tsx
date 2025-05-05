@@ -1,18 +1,14 @@
 // src/app/dashboard/DashboardPage.tsx
 "use client";
 
-import { useTransactions } from "../../../hooks/TransactionsData";
-import Card from "../common/Card";
 import PinnedGoalWidget from "../Goals/ui/PinnedGoalWidget";
-import ReportsPage from "../Reports/ReportsPage";
-import TransactionsList from "../TransactionPage/ui/TransactionsList";
 import { BudgetWidget } from "./ui/BudgetWidget";
 import KpiCard from "./ui/KpiCard";
 import { MonthlyExpenseWidget } from "./ui/MonthlyExpense";
+import ReportsPage from "../Reports/ReportsPage";
+import { TransactionWidget } from "../TransactionPage/ui/TransactionWidget";
 
 export default function DashboardPage() {
-  const { transactions } = useTransactions();
-
   // you can replace these with real calculations/hooks later
   const totalBudget = 2450;
   const spent = 560.48;
@@ -51,19 +47,8 @@ export default function DashboardPage() {
       </div>
 
       {/* ─── TRANSACTIONS & REPORTS ──────────────────────── */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 auto-rows-min">
-        <Card className="w-full max-w-5xl mx-auto">
-          <TransactionsList
-            transactions={transactions}
-            isAdding={false}
-            onAdd={() => {}}
-            onUpdate={() => {}}
-            onDelete={() => {}}
-            searchValue=""
-            onSearch={() => {}}
-          />
-        </Card>
-
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+        <TransactionWidget />
         <ReportsPage isWidget />
       </div>
 

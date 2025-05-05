@@ -1,3 +1,4 @@
+// src/app/components/reports/ReportsPage.tsx
 "use client";
 
 import { ResponsiveBar } from "@nivo/bar";
@@ -9,24 +10,26 @@ import {
   lightCategoryColorMap,
   darkCategoryColorMap,
 } from "@/lib/categoryColors";
+import Card from "../common/Card";
 
 interface ReportsPageProps {
+  /** full page when false, dashboard‐widget when true */
   isWidget?: boolean;
 }
 
-const ReportsPage = ({ isWidget = false }: ReportsPageProps) => {
+export default function ReportsPage({ isWidget = false }: ReportsPageProps) {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
 
   useEffect(() => {
     fetch("/api/transactions")
-      .then((res) => res.json())
+      .then((r) => r.json())
       .then(setTransactions)
       .catch(console.error);
   }, []);
 
-  // 🔢 Group by category
+  // group negative transactions by category
   const categoryMap: Record<string, number> = {};
   transactions.forEach((txn) => {
     if (txn.amount < 0) {
@@ -50,60 +53,83 @@ const ReportsPage = ({ isWidget = false }: ReportsPageProps) => {
     color: colorMap[category] || "#999999",
   }));
 
+  if (isWidget) {
+    return (
+      <Card className="h-full flex flex-col p-4">
+        <h3 className="text-lg font-semibold mb-2">Spending Distribution</h3>
+        <div className="flex-1 w-full">
+          <ResponsivePie
+            data={pieData}
+            margin={{ top: 20, right: 100, bottom: 60, left: 100 }}
+            innerRadius={0.5}
+            padAngle={1}
+            cornerRadius={4}
+            //Test out
+            activeOuterRadiusOffset={8}
+            arcLinkLabelsSkipAngle={10} // only label slices > 10°
+            arcLinkLabelsTextOffset={8} // bring the text closer to the slice
+            arcLinkLabelsOffset={4} // shorten the dashed line
+            arcLinkLabelsDiagonalLength={8}
+            arcLinkLabelsStraightLength={4}
+            arcLinkLabelsThickness={1}
+            colors={{ datum: "data.color" }}
+            theme={{
+              labels: { text: { fill: "var(--text-light)" } },
+              tooltip: {
+                container: {
+                  background: "var(--background-gray)",
+                  color: "var(--text-light)",
+                },
+              },
+            }}
+          />
+        </div>
+      </Card>
+    );
+  }
+
+  // ───── FULL PAGE MODE ──────────────
   return (
     <div className="min-h-screen bg-[var(--background-gray)] text-[var(--text-light)]">
+      <h2 className="text-2xl font-bold mb-6">Spending Reports</h2>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* 📊 Bar Chart */}
-        {!isWidget && (
-          <>
-            <h2 className="text-2xl font-bold mb-6">Spending Reports</h2>
-            <div className="bg-[var(--background)] p-4 rounded-lg shadow-md h-[450px]">
-              <h3 className="text-lg font-semibold mb-2">
-                Spending by Category
-              </h3>
-              <div className="h-[400px]">
-                <ResponsiveBar
-                  data={barData}
-                  keys={["amount"]}
-                  indexBy="category"
-                  margin={{ top: 20, right: 30, bottom: 50, left: 60 }}
-                  padding={0.3}
-                  colors={{ datum: "data.color" }}
-                  theme={{
-                    // textColor: "var(--text-light)",
-                    axis: {
-                      ticks: {
-                        text: { fill: "var(--text-light)" },
-                      },
-                      legend: {
-                        text: { fill: "var(--text-light)" },
-                      },
-                    },
-                    tooltip: {
-                      container: {
-                        background: "var(--background-gray)",
-                        color: "var(--text-light)",
-                      },
-                    },
-                  }}
-                  axisBottom={{
-                    tickRotation: -20,
-                  }}
-                  axisLeft={{
-                    legend: "Amount",
-                    legendPosition: "middle",
-                    legendOffset: -40,
-                  }}
-                />
-              </div>
-            </div>
-          </>
-        )}
+        {/* Bar Chart */}
+        <div className="bg-[var(--background)] p-4 rounded-lg shadow-md h-[450px]">
+          <h3 className="text-lg font-semibold mb-2">Spending by Category</h3>
+          <div className="w-full h-[400px]">
+            <ResponsiveBar
+              data={barData}
+              keys={["amount"]}
+              indexBy="category"
+              margin={{ top: 20, right: 30, bottom: 50, left: 60 }}
+              padding={0.3}
+              colors={{ datum: "data.color" }}
+              theme={{
+                axis: {
+                  ticks: { text: { fill: "var(--text-light)" } },
+                  legend: { text: { fill: "var(--text-light)" } },
+                },
+                tooltip: {
+                  container: {
+                    background: "var(--background-gray)",
+                    color: "var(--text-light)",
+                  },
+                },
+              }}
+              axisBottom={{ tickRotation: -20 }}
+              axisLeft={{
+                legend: "Amount",
+                legendPosition: "middle",
+                legendOffset: -40,
+              }}
+            />
+          </div>
+        </div>
 
-        {/* 🥧 Donut Chart */}
+        {/* Pie Chart */}
         <div className="bg-[var(--background)] p-4 rounded-lg shadow-md h-[450px]">
           <h3 className="text-lg font-semibold mb-2">Spending Distribution</h3>
-          <div className="h-[400px]">
+          <div className="w-full h-[400px]">
             <ResponsivePie
               data={pieData}
               margin={{ top: 20, right: 20, bottom: 40, left: 20 }}
@@ -113,11 +139,7 @@ const ReportsPage = ({ isWidget = false }: ReportsPageProps) => {
               activeOuterRadiusOffset={8}
               colors={{ datum: "data.color" }}
               theme={{
-                labels: {
-                  text: {
-                    fill: "var(--text-light)",
-                  },
-                },
+                labels: { text: { fill: "var(--text-light)" } },
                 tooltip: {
                   container: {
                     background: "var(--background-gray)",
@@ -125,25 +147,10 @@ const ReportsPage = ({ isWidget = false }: ReportsPageProps) => {
                   },
                 },
               }}
-              // legends={[
-              //   {
-              //     anchor: "bottom",
-              //     direction: "row",
-              //     justify: false,
-              //     translateY: 36,
-              //     itemWidth: 100,
-              //     itemHeight: 18,
-              //     itemTextColor: "var(--text-light)",
-              //     symbolSize: 18,
-              //     symbolShape: "circle",
-              //   },
-              // ]}
             />
           </div>
         </div>
       </div>
     </div>
   );
-};
-
-export default ReportsPage;
+}
