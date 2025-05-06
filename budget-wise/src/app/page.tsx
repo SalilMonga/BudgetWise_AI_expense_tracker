@@ -1,5 +1,5 @@
-import TransactionsPage from "./components/TransactionView";
+import CentralRouter from "./components/common/CentralRouter";
 
 export default function Home() {
-  return <TransactionsPage />;
+  return <CentralRouter />;
 }
