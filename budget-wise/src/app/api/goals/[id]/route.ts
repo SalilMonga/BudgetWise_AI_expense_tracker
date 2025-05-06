@@ -5,9 +5,9 @@ import { goalStore } from "../data";
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ): Promise<NextResponse> {
-  const { id } = await params;
+  const { id } = params;
   const body = (await request.json()) as {
     delta?: number;
     pinned?: boolean;

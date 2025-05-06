@@ -4,7 +4,7 @@ export interface Transaction {
   description: string;
   category: string;
   amount: number;
-  status: "Completed" | "Pending";
+  status: "Completed" | "Pending" | "Recurring";
 }
 
 export * from "./goals";

@@ -7,6 +7,9 @@ import { FaCheck, FaTimes } from "react-icons/fa";
 import TransactionsList from "./ui/TransactionsList";
 import { useTransactions } from "../../../hooks/TransactionsData";
 import { Transaction } from "../../../types";
+import DeleteTransactionModal from "./ui/DeleteTransactionModal";
+
+const ITEMS_PER_PAGE = 10;
 
 export default function TransactionsPage() {
   const {
@@ -22,7 +25,7 @@ export default function TransactionsPage() {
 
   // search text
   const [search, setSearch] = useState("");
-  // “add‐new” row toggle & draft
+  // "add‐new" row toggle & draft
   const [isAdding, setAdding] = useState(false);
   const [draft, setDraft] = useState<Omit<Transaction, "id">>({
     date: new Date().toLocaleDateString("en-CA"), // ISO YYYY-MM-DD
@@ -31,6 +34,11 @@ export default function TransactionsPage() {
     amount: 0,
     status: "Pending",
   });
+
+  // Delete modal state
+  const [transactionToDelete, setTransactionToDelete] = useState<Transaction | null>(null);
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
 
   if (isLoading) return <div className="p-6 text-center">Loading…</div>;
   if (isError)
@@ -44,6 +52,11 @@ export default function TransactionsPage() {
   const filtered = transactions.filter((t) =>
     t.description.toLowerCase().includes(search.toLowerCase())
   );
+
+  // Calculate pagination
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const paginatedTransactions = filtered.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   // handlers
   const startAdd = () => setAdding(true);
@@ -62,9 +75,27 @@ export default function TransactionsPage() {
     cancelAdd();
   };
 
+  const handleDeleteClick = (id: number) => {
+    const transaction = transactions.find(t => t.id === id);
+    if (transaction) {
+      setTransactionToDelete(transaction);
+    }
+  };
+
+  const handleDeleteConfirm = () => {
+    if (transactionToDelete) {
+      deleteTransaction(transactionToDelete.id);
+      setTransactionToDelete(null);
+    }
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   return (
     <Card className="w-full max-w-5xl mx-auto my-8">
-      {/* header + search + “+” */}
+      {/* header + search + "+" */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-semibold text-[var(--text-light)]">
           Transactions
@@ -153,7 +184,17 @@ export default function TransactionsPage() {
                   />
                 </td>
                 <td className="p-3">
-                  <span className="text-yellow-400 text-sm">● Pending</span>
+                  <select
+                    value={draft.status}
+                    onChange={(e) =>
+                      setDraft((d) => ({ ...d, status: e.target.value as Transaction["status"] }))
+                    }
+                    className="w-full p-2 bg-[var(--background)] rounded-md text-[var(--text-light)]"
+                  >
+                    <option value="Pending">Pending</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Recurring">Recurring</option>
+                  </select>
                 </td>
                 <td className="p-3 flex gap-2">
                   <FaCheck
@@ -170,9 +211,9 @@ export default function TransactionsPage() {
 
             {/* the rest of the rows */}
             <TransactionsList
-              transactions={filtered}
+              transactions={paginatedTransactions}
               onUpdate={(t) => updateTransaction(t)}
-              onDelete={(id) => deleteTransaction(id)}
+              onDelete={handleDeleteClick}
             />
           </tbody>
         </table>
@@ -181,23 +222,32 @@ export default function TransactionsPage() {
       {/* pagination footer */}
       <div className="mt-4 flex justify-between items-center text-[var(--text-dark)]">
         <p className="text-sm">
-          Showing {filtered.length} of {transactions.length} transactions
+          Showing {startIndex + 1}-{Math.min(startIndex + ITEMS_PER_PAGE, filtered.length)} of {filtered.length} transactions
         </p>
         <div className="flex space-x-2">
-          {[1, 2, 3, 4, 5].map((p) => (
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
             <button
-              key={p}
-              className={`px-3 py-1 text-sm rounded-md ${
-                p === 1
-                  ? "bg-[var(--fill)] text-white"
-                  : "bg-[var(--background-gray)] text-[var(--text-dark)]"
-              }`}
+              key={page}
+              onClick={() => handlePageChange(page)}
+              className={`px-3 py-1 text-sm rounded-md ${page === currentPage
+                ? "bg-[var(--fill)] text-white"
+                : "bg-[var(--background-gray)] text-[var(--text-dark)] hover:bg-[var(--background)]"
+                }`}
             >
-              {p}
+              {page}
             </button>
           ))}
         </div>
       </div>
+
+      {/* Delete Transaction Modal */}
+      {transactionToDelete && (
+        <DeleteTransactionModal
+          transaction={transactionToDelete}
+          onClose={() => setTransactionToDelete(null)}
+          onConfirm={handleDeleteConfirm}
+        />
+      )}
     </Card>
   );
 }

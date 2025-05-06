@@ -2,13 +2,14 @@ import { NextResponse } from "next/server";
 
 // use ISO dates so downstream grouping by YYYY‑MM‑DD works
 const transactions = [
+  // January 2024 transactions
   {
     id: 1,
     date: "2024-01-20",
-    description: "Grocery Store",
-    category: "Food",
-    amount: -82.5,
-    status: "Completed",
+    description: "Netflix Subscription",
+    category: "Bills",
+    amount: -15.99,
+    status: "Recurring",
   },
   {
     id: 2,
@@ -16,7 +17,7 @@ const transactions = [
     description: "Monthly Salary",
     category: "Income",
     amount: 3000,
-    status: "Completed",
+    status: "Recurring",
   },
   {
     id: 3,
@@ -37,10 +38,10 @@ const transactions = [
   {
     id: 5,
     date: "2024-01-16",
-    description: "Gas Station",
-    category: "Transport",
+    description: "Gym Membership",
+    category: "Bills",
     amount: -45,
-    status: "Completed",
+    status: "Recurring",
   },
   {
     id: 6,
@@ -64,7 +65,7 @@ const transactions = [
     description: "Internet Bill",
     category: "Bills",
     amount: -79.99,
-    status: "Pending",
+    status: "Recurring",
   },
   {
     id: 9,
@@ -80,6 +81,87 @@ const transactions = [
     description: "Public Transport",
     category: "Transport",
     amount: -25,
+    status: "Completed",
+  },
+  // December 2023 transactions
+  {
+    id: 11,
+    date: "2023-12-28",
+    description: "Netflix Subscription",
+    category: "Bills",
+    amount: -15.99,
+    status: "Recurring",
+  },
+  {
+    id: 12,
+    date: "2023-12-27",
+    description: "Monthly Salary",
+    category: "Income",
+    amount: 3000,
+    status: "Recurring",
+  },
+  {
+    id: 13,
+    date: "2023-12-25",
+    description: "Christmas Shopping",
+    category: "Shopping",
+    amount: -350,
+    status: "Completed",
+  },
+  {
+    id: 14,
+    date: "2023-12-22",
+    description: "Gym Membership",
+    category: "Bills",
+    amount: -45,
+    status: "Recurring",
+  },
+  {
+    id: 15,
+    date: "2023-12-20",
+    description: "Internet Bill",
+    category: "Bills",
+    amount: -79.99,
+    status: "Recurring",
+  },
+  {
+    id: 16,
+    date: "2023-12-18",
+    description: "Electric Bill",
+    category: "Bills",
+    amount: -135,
+    status: "Completed",
+  },
+  {
+    id: 17,
+    date: "2023-12-15",
+    description: "Freelance Payment",
+    category: "Income",
+    amount: 750,
+    status: "Completed",
+  },
+  {
+    id: 18,
+    date: "2023-12-12",
+    description: "Grocery Shopping",
+    category: "Food",
+    amount: -95.50,
+    status: "Completed",
+  },
+  {
+    id: 19,
+    date: "2023-12-10",
+    description: "Gas Station",
+    category: "Transport",
+    amount: -45,
+    status: "Completed",
+  },
+  {
+    id: 20,
+    date: "2023-12-05",
+    description: "Coffee Shop",
+    category: "Food",
+    amount: -4.5,
     status: "Completed",
   },
 ];

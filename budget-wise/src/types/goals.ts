@@ -5,7 +5,7 @@ export interface Goal {
   /** Unique identifier (UUID, MongoID, etc.) */
   id: string;
 
-  /** User‑visible title, e.g. “Emergency Fund” */
+  /** User‑visible title, e.g. "Emergency Fund" */
   title: string;
 
   /** Total amount the user wants to save */
@@ -14,11 +14,14 @@ export interface Goal {
   /** Amount saved so far */
   savedAmount: number;
 
-  /** Optional free‑text label, e.g. “Savings”, “Personal”, … */
+  /** Optional free‑text label, e.g. "Savings", "Personal", … */
   category?: string;
 
   /** True if the user pinned this goal for quick display */
   pinned: boolean;
+
+  /** Target date to reach the goal (ISO string) */
+  deadline: string;
 }
 
 /* ------------------------------------------------------------------ */

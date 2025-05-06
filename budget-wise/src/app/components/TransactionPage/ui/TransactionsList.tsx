@@ -45,27 +45,26 @@ export default function TransactionsList({
           <td className="p-3">
             <span
               style={{ backgroundColor: colorMap[txn.category] }}
-              className={`px-2 py-1 text-xs font-bold rounded-md ${
-                isDark ? "text-white" : "text-gray-800"
-              }`}
+              className={`px-2 py-1 text-xs font-bold rounded-md ${isDark ? "text-white" : "text-gray-800"
+                }`}
             >
               {txn.category}
             </span>
           </td>
           <td
-            className={`p-3 ${
-              txn.amount < 0 ? "text-red-500" : "text-green-500"
-            }`}
+            className={`p-3 ${txn.amount < 0 ? "text-red-500" : "text-green-500"
+              }`}
           >
             ${Math.abs(txn.amount).toFixed(2)}
           </td>
           <td className="p-3">
             <span
-              className={`text-sm font-medium ${
-                txn.status === "Completed"
+              className={`text-sm font-medium ${txn.status === "Completed"
                   ? "text-green-400"
-                  : "text-yellow-400"
-              }`}
+                  : txn.status === "Recurring"
+                    ? "text-blue-400"
+                    : "text-yellow-400"
+                }`}
             >
               ● {txn.status}
             </span>

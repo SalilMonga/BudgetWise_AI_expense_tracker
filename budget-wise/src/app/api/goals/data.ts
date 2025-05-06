@@ -11,6 +11,7 @@ export const goalStore = {
       savedAmount: 500,
       category: "",
       pinned: true,
+      deadline: new Date(new Date().setMonth(new Date().getMonth() + 6)).toISOString().split('T')[0], // 6 months from now
     },
     {
       id: "g2",
@@ -19,6 +20,7 @@ export const goalStore = {
       savedAmount: 240,
       category: "",
       pinned: false,
+      deadline: new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString().split('T')[0], // 1 month from now
     },
     {
       id: "g3",
@@ -27,6 +29,7 @@ export const goalStore = {
       savedAmount: 1200,
       category: "",
       pinned: false,
+      deadline: new Date(new Date().setMonth(new Date().getMonth() + 3)).toISOString().split('T')[0], // 3 months from now
     },
   ],
 };

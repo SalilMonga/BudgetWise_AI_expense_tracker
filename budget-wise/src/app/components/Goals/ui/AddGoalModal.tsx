@@ -13,14 +13,16 @@ export default function AddGoalModal({ onClose, onSave }: Props) {
   const [title, setTitle] = useState("");
   const [targetAmount, setTargetAmount] = useState<number | "">("");
   const [category, setCategory] = useState("");
+  const [deadline, setDeadline] = useState("");
 
   const handleSave = () => {
-    if (!title.trim() || !targetAmount || Number(targetAmount) <= 0) return;
+    if (!title.trim() || !targetAmount || Number(targetAmount) <= 0 || !deadline) return;
     onSave({
       title: title.trim(),
       targetAmount: Number(targetAmount),
       savedAmount: 0,
       category: category.trim(),
+      deadline,
     });
     onClose();
   };
@@ -93,6 +95,22 @@ export default function AddGoalModal({ onClose, onSave }: Props) {
               type="text"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
+              className="
+                w-full px-3 py-2
+                bg-[var(--background)]
+                border border-[var(--text-dark)]
+                rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-purple)]
+              "
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Target Date</label>
+            <input
+              type="date"
+              value={deadline}
+              onChange={(e) => setDeadline(e.target.value)}
+              min={new Date().toISOString().split('T')[0]}
               className="
                 w-full px-3 py-2
                 bg-[var(--background)]
