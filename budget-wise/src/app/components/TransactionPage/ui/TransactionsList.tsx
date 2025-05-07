@@ -52,18 +52,17 @@ export default function TransactionsList({
             </span>
           </td>
           <td
-            className={`p-3 ${txn.amount < 0 ? "text-red-500" : "text-green-500"
-              }`}
+            className={`p-3 ${txn.category === "Income" ? "text-green-500" : "text-red-500"}`}
           >
             ${Math.abs(txn.amount).toFixed(2)}
           </td>
           <td className="p-3">
             <span
               className={`text-sm font-medium ${txn.status === "Completed"
-                  ? "text-green-400"
-                  : txn.status === "Recurring"
-                    ? "text-blue-400"
-                    : "text-yellow-400"
+                ? "text-green-400"
+                : txn.status === "Recurring"
+                  ? "text-blue-400"
+                  : "text-yellow-400"
                 }`}
             >
               ● {txn.status}
