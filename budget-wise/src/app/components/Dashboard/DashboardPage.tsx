@@ -16,19 +16,14 @@ export default function DashboardPage() {
   const { profile, isLoading: loadingBudget } = useProfile();
   const { transactions } = useTransactions();
 
-  // Calculate spent for current month
+  // Calculate spent for current month (exclude Income category)
   const now = new Date();
   const currentMonth = now.toISOString().slice(0, 7); // "YYYY-MM"
   const spent = transactions
-    .filter((txn) => txn.date.startsWith(currentMonth) && txn.amount < 0)
+    .filter(
+      (txn) => txn.date.startsWith(currentMonth) && txn.category !== "Income"
+    )
     .reduce((sum, txn) => sum + Math.abs(txn.amount), 0);
-
-  const pctRemaining = Math.round(
-    profile?.monthlyBudget > 0
-      ? ((profile.monthlyBudget - spent) / profile.monthlyBudget) * 100
-      : 0
-  );
-
   const savingsGoal = 5000;
   const saved = 3000;
 
@@ -86,9 +81,16 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           <KpiCard
             title="Monthly Budget"
-            value={`$${profile?.monthlyBudget?.toLocaleString() ?? "0"}`}
+            value={`$${((profile?.monthlyBudget ?? 0) - spent).toLocaleString(
+              undefined,
+              { minimumFractionDigits: 2 }
+            )}`}
             subtitle={
-              loadingBudget ? "Loading..." : `${pctRemaining}% remaining`
+              loadingBudget
+                ? "Loading..."
+                : `Original: $${
+                    profile?.monthlyBudget?.toLocaleString() ?? "0"
+                  }`
             }
           />
           <KpiCard
@@ -100,8 +102,8 @@ export default function DashboardPage() {
               loadingBudget
                 ? ""
                 : `${Math.round(
-                  (spent / (profile?.monthlyBudget ?? 1)) * 100
-                )}% of budget`
+                    (spent / (profile?.monthlyBudget ?? 1)) * 100
+                  )}% of budget`
             }
           />
           <KpiCard
