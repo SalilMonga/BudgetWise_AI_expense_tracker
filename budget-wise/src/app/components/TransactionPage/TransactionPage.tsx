@@ -70,8 +70,8 @@ export default function TransactionsPage() {
       status: "Pending",
     });
   };
-  const saveAdd = () => {
-    addTransaction(draft);
+  const saveAdd = async () => {
+    await addTransaction(draft);
     cancelAdd();
   };
 
@@ -82,9 +82,9 @@ export default function TransactionsPage() {
     }
   };
 
-  const handleDeleteConfirm = () => {
+  const handleDeleteConfirm = async () => {
     if (transactionToDelete) {
-      deleteTransaction(transactionToDelete.id);
+      await deleteTransaction(transactionToDelete.id);
       setTransactionToDelete(null);
     }
   };
@@ -212,7 +212,9 @@ export default function TransactionsPage() {
             {/* the rest of the rows */}
             <TransactionsList
               transactions={paginatedTransactions}
-              onUpdate={(t) => updateTransaction(t)}
+              onUpdate={async (t) => {
+                await updateTransaction(t);
+              }}
               onDelete={handleDeleteClick}
             />
           </tbody>

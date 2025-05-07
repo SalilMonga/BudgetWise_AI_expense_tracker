@@ -112,8 +112,8 @@ export default function DeleteTransactionModal({ transaction, onClose, onConfirm
           </div>
 
           {impact && (
-            <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border border-green-200 dark:border-green-800">
-              <h4 className="font-medium text-green-700 dark:text-green-300 mb-2">
+            <div className="bg-white dark:bg-green-900/20 p-4 rounded-lg border border-green-400 dark:border-green-800">
+              <h4 className="font-medium text-gray-900 dark:text-green-200 mb-2">
                 Impact on "{impact.goal.title}"
                 {impact.goal.pinned && (
                   <span className="ml-2 text-xs bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200 px-2 py-0.5 rounded-full">
@@ -121,7 +121,7 @@ export default function DeleteTransactionModal({ transaction, onClose, onConfirm
                   </span>
                 )}
               </h4>
-              <ul className="space-y-2 text-sm text-green-600 dark:text-green-400">
+              <ul className="space-y-2 text-sm text-gray-800 dark:text-green-300">
                 <li>
                   • You'll reach your goal {Math.round(impact.monthsSaved)} months sooner
                 </li>

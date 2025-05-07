@@ -23,6 +23,10 @@ const ReportsView = dynamic(() => import("../Reports/ReportsPage"), {
   loading: () => <p>Loading Reports...</p>,
 });
 
+const ProfilePage = dynamic(() => import("../Profile/ProfilePage"), {
+  loading: () => <p>Loading Profile...</p>,
+});
+
 export default function CentralRouter() {
   // We'll read the `view` query parameter from URL, e.g. /?view=transactions or /?view=other
   const searchParams = useSearchParams();
@@ -37,6 +41,8 @@ export default function CentralRouter() {
       return <GoalsPage />;
     case "reports":
       return <ReportsView isWidget={false} />;
+    case "profile":
+      return <ProfilePage />;
     default:
       // Fallback or default homepage content
       return (

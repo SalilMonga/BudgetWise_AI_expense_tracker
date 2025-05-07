@@ -4,10 +4,16 @@
 import Card from "../../common/Card";
 import ProgressBar from "../../common/ProgressBar";
 
-export function BudgetWidget() {
-  const totalBudget = 2450;
-  const spent = 1850;
-  const remaining = totalBudget - spent;
+interface Props {
+  budget: number;
+  spent: number;
+  loading: boolean;
+}
+
+export function BudgetWidget({ budget, spent, loading }: Props) {
+  const totalBudget = loading ? 0 : budget;
+  const totalSpent = loading ? 0 : spent;
+  const remaining = totalBudget - totalSpent;
 
   return (
     <Card className="flex flex-col p-4 h-full">
@@ -15,7 +21,7 @@ export function BudgetWidget() {
         Monthly Budget
       </h3>
       <p className="mt-2 text-2xl font-bold text-[var(--text-light)]">
-        ${totalBudget}
+        ${loading ? "..." : totalBudget}
       </p>
 
       {/* full‑width bar with percentage */}

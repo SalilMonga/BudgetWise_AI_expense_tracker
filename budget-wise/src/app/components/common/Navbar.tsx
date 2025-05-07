@@ -6,17 +6,18 @@ import { FaSearch, FaBell, FaUser } from "react-icons/fa";
 import { FiCreditCard } from "react-icons/fi";
 import { useSearchParams } from "next/navigation";
 import ThemeToggle from "./ThemeToggle";
+import ProfilePopover from "../Profile/ProfilePopover";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const searchParams = useSearchParams();
   const currentView = searchParams.get("view");
+  const [showProfile, setShowProfile] = useState(false);
 
   const getLinkClasses = (viewName: string) =>
-    `px-3 py-2 text-sm font-medium transition-colors duration-150 ${
-      currentView === viewName
-        ? "text-primary border-b-2 border-primary"
-        : "text-foreground hover:text-primary"
+    `px-3 py-2 text-sm font-medium transition-colors duration-150 ${currentView === viewName
+      ? "text-primary border-b-2 border-primary"
+      : "text-foreground hover:text-primary"
     }`;
 
   return (
@@ -59,11 +60,11 @@ const Navbar = () => {
 
           {/* Right-side icons */}
           <div className="flex items-center gap-3">
-            <ThemeToggle />
+            {/* <ThemeToggle /> */}
 
-            <button className="p-2 rounded-md hover:bg-primary/30 transition-colors">
+            {/* <button className="p-2 rounded-md hover:bg-primary/30 transition-colors">
               <FaSearch className="h-4 w-4" />
-            </button>
+            </button> */}
 
             <div className="relative">
               <button className="p-2 rounded-md hover:bg-primary/30 transition-colors">
@@ -72,9 +73,19 @@ const Navbar = () => {
               </button>
             </div>
 
-            <button className="p-2 rounded-md hover:bg-primary/30 transition-colors">
-              <FaUser className="h-4 w-4" />
-            </button>
+            {/* Profile icon-only button on the right */}
+            <div className="relative">
+              <button
+                className="p-2 rounded-md hover:bg-primary/30 transition-colors"
+                aria-label="Profile"
+                onClick={() => setShowProfile((v) => !v)}
+              >
+                <FaUser className="h-5 w-5" />
+              </button>
+              {showProfile && (
+                <ProfilePopover onClose={() => setShowProfile(false)} />
+              )}
+            </div>
 
             {/* Mobile Menu Toggle */}
             <div className="md:hidden flex items-center">
@@ -139,6 +150,8 @@ const Navbar = () => {
           <Link href="/?view=reports" className={getLinkClasses("reports")}>
             Reports
           </Link>
+          {/* Profile icon-only in mobile menu */}
+          {/* Remove from mobile menu, as popover is only for desktop */}
         </div>
       )}
     </nav>

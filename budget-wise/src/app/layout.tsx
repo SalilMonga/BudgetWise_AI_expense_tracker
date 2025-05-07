@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Providers } from "./providers";
-import BodyWrapper from "./components/layout/BodyWrapper";
-import Navbar from "./components/common/Navbar";
+import LayoutInner from "./components/layout/LayoutInner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,13 +35,7 @@ export default function RootLayout({
     transition-colors duration-300 ease-in-out
   `}
       >
-        <Providers>
-          <Navbar />
-          {/* <div className="pt-14">{children}</div> */}
-          {/* Added BodyWrapper to prevent the hydration warning due to theme mismatch in server and client */}
-          <BodyWrapper>{children}</BodyWrapper>
-          {/* {children} */}
-        </Providers>
+        <LayoutInner>{children}</LayoutInner>
       </body>
     </html>
   );
