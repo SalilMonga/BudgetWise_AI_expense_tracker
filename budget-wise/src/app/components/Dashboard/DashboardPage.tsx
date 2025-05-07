@@ -45,10 +45,20 @@ export default function DashboardPage() {
         }
         setUsername(name);
       }
+      // Only show greeting if not greeted before
+      const greeted = localStorage.getItem("bw_greeted");
+      if (!greeted) {
+        setShowGreeting(true);
+        // Hide greeting after 1.7s and set flag
+        const timer = setTimeout(() => {
+          setShowGreeting(false);
+          localStorage.setItem("bw_greeted", "1");
+        }, 1700);
+        return () => clearTimeout(timer);
+      } else {
+        setShowGreeting(false);
+      }
     }
-    // Hide greeting after 1.7s
-    const timer = setTimeout(() => setShowGreeting(false), 1700);
-    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -90,8 +100,8 @@ export default function DashboardPage() {
               loadingBudget
                 ? ""
                 : `${Math.round(
-                    (spent / (profile?.monthlyBudget ?? 1)) * 100
-                  )}% of budget`
+                  (spent / (profile?.monthlyBudget ?? 1)) * 100
+                )}% of budget`
             }
           />
           <KpiCard
