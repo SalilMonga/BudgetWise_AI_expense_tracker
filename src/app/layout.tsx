@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import ClientLayout from "./components/layout/ClientLayout";
+import { Providers } from "./providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,11 +20,7 @@ export const metadata: Metadata = {
   description: "Track your expenses and manage your finances with SpendWise",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -35,7 +31,9 @@ export default function RootLayout({
           transition-colors duration-300 ease-in-out
         `}
       >
-        <ClientLayout>{children}</ClientLayout>
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   );
