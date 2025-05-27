@@ -47,7 +47,7 @@ export default function AddFundsModal({ goal, onClose, onSave }: Props) {
             onChange={(e) => setWithdraw(e.target.value === "withdraw")}
             className="
               w-full px-3 py-2
-              bg-[var(--background)]
+              bg-[var(--background-gray)]
               border border-[var(--text-dark)]
               rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-purple)]
             "
@@ -71,7 +71,7 @@ export default function AddFundsModal({ goal, onClose, onSave }: Props) {
           }
           className="
             w-full px-3 py-2
-            bg-[var(--background)]
+            bg-[var(--background-gray)]
             border border-[var(--text-dark)]
             rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-[var(--primary-purple)]
           "

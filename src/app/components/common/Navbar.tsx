@@ -13,14 +13,15 @@ const Navbar = () => {
   const currentView = searchParams.get("view");
   const [showProfile, setShowProfile] = useState(false);
 
-  const getLinkClasses = (viewName: string) =>
-    `px-3 py-2 text-sm font-medium transition-colors duration-150 ${currentView === viewName
-      ? "text-primary border-b-2 border-primary"
-      : "text-foreground hover:text-primary"
-    }`;
+  const getLinkClasses = (view: string) => {
+    const baseClasses = "px-3 py-2 rounded-md text-sm font-medium transition-colors";
+    return currentView === view
+      ? `${baseClasses} bg-[var(--primary-purple)] text-white`
+      : `${baseClasses} text-[var(--text-light)] hover:bg-[var(--background-gray)]`;
+  };
 
   return (
-    <nav className="bg-[var(--background-gray)] backdrop-blur-sm bg-opacity-80 border-b border-muted shadow-md fixed top-0 w-full z-10 h-14 mb-14">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-[var(--background-gray)] border-b border-[var(--border)] text-[var(--text-light)]">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-14">
           {/* Logo */}
@@ -34,21 +35,12 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex md:items-center md:space-x-4">
-            <Link
-              href="/?view=dashboard"
-              className={getLinkClasses("dashboard")}
-            >
+            <Link href="/?view=dashboard" className={getLinkClasses("dashboard")}>
               Dashboard
             </Link>
-            <Link
-              href="/?view=transactions"
-              className={getLinkClasses("transactions")}
-            >
+            <Link href="/?view=transactions" className={getLinkClasses("transactions")}>
               Transactions
             </Link>
-            {/* <Link href="/?view=budget" className={getLinkClasses("budget")}>
-              Budget
-            </Link> */}
             <Link href="/?view=goals" className={getLinkClasses("goals")}>
               Goals
             </Link>
@@ -86,62 +78,39 @@ const Navbar = () => {
               )}
             </div>
 
-            {/* Mobile Menu Toggle */}
-            <div className="md:hidden flex items-center">
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="p-2 rounded-md hover:bg-primary/30 transition-colors"
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden p-2 rounded-md text-[var(--text-light)] hover:bg-[var(--background-gray)]"
+            >
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
               >
-                <span className="sr-only">Open menu</span>
                 {isMobileMenuOpen ? (
-                  <svg
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
+                  <path d="M6 18L18 6M6 6l12 12" />
                 ) : (
-                  <svg
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4 6h16M4 12h16M4 18h16"
-                    />
-                  </svg>
+                  <path d="M4 6h16M4 12h16M4 18h16" />
                 )}
-              </button>
-            </div>
+              </svg>
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Mobile menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden px-2 pt-2 pb-3 space-y-1 border-t border-muted">
           <Link href="/?view=dashboard" className={getLinkClasses("dashboard")}>
             Dashboard
           </Link>
-          <Link
-            href="/?view=transactions"
-            className={getLinkClasses("transactions")}
-          >
+          <Link href="/?view=transactions" className={getLinkClasses("transactions")}>
             Transactions
-          </Link>
-          <Link href="/?view=budget" className={getLinkClasses("budget")}>
-            Budget
           </Link>
           <Link href="/?view=goals" className={getLinkClasses("goals")}>
             Goals
@@ -149,8 +118,6 @@ const Navbar = () => {
           <Link href="/?view=reports" className={getLinkClasses("reports")}>
             Reports
           </Link>
-          {/* Profile icon-only in mobile menu */}
-          {/* Remove from mobile menu, as popover is only for desktop */}
         </div>
       )}
     </nav>

@@ -9,26 +9,21 @@ const CentralRouter = dynamic(() => import("./components/common/CentralRouter"),
   loading: () => <div className="p-4">Loading content…</div>,
 });
 
-function HomePageContent() {
+export default function HomePage() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
-    // Only clear localStorage once per browser session after server restart
-    if (!sessionStorage.getItem("cleared_on_load")) {
-      localStorage.removeItem("bw_greeted");
-      localStorage.removeItem("bw_user_email");
-      localStorage.removeItem("sb-access-token");
-      localStorage.removeItem("welcome_message_shown");
-      sessionStorage.setItem("cleared_on_load", "1");
-      window.dispatchEvent(new Event("authchange"));
-      window.dispatchEvent(new Event("storage"));
-    }
     const checkAuth = () => {
       setIsAuthenticated(!!localStorage.getItem("sb-access-token"));
     };
+
+    // Initial check
     checkAuth();
+
+    // Listen for auth changes
     window.addEventListener("storage", checkAuth);
     window.addEventListener("authchange", checkAuth);
+
     return () => {
       window.removeEventListener("storage", checkAuth);
       window.removeEventListener("authchange", checkAuth);
@@ -44,19 +39,9 @@ function HomePageContent() {
   }
 
   return (
-    <main>
+    <Suspense fallback={<div className="p-4">Loading content…</div>}>
       <WelcomeMessage />
-      <Suspense fallback={<div className="p-4">Loading content…</div>}>
-        <CentralRouter />
-      </Suspense>
-    </main>
-  );
-}
-
-export default function HomePage() {
-  return (
-    <Suspense fallback={<div className="p-4">Loading root content…</div>}>
-      <HomePageContent />
+      <CentralRouter />
     </Suspense>
   );
 }

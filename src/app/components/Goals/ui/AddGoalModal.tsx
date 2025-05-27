@@ -61,7 +61,7 @@ export default function AddGoalModal({ onClose, onSave }: Props) {
               onChange={(e) => setTitle(e.target.value)}
               className="
                 w-full px-3 py-2
-                bg-[var(--background)]
+                bg-[var(--background-gray)]
                 border border-[var(--text-dark)]
                 rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-purple)]
               "
@@ -82,7 +82,7 @@ export default function AddGoalModal({ onClose, onSave }: Props) {
               }
               className="
                 w-full px-3 py-2
-                bg-[var(--background)]
+                bg-[var(--background-gray)]
                 border border-[var(--text-dark)]
                 rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-purple)]
               "
@@ -97,7 +97,7 @@ export default function AddGoalModal({ onClose, onSave }: Props) {
               onChange={(e) => setCategory(e.target.value)}
               className="
                 w-full px-3 py-2
-                bg-[var(--background)]
+                bg-[var(--background-gray)]
                 border border-[var(--text-dark)]
                 rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-purple)]
               "
@@ -113,7 +113,7 @@ export default function AddGoalModal({ onClose, onSave }: Props) {
               min={new Date().toISOString().split('T')[0]}
               className="
                 w-full px-3 py-2
-                bg-[var(--background)]
+                bg-[var(--background-gray)]
                 border border-[var(--text-dark)]
                 rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-purple)]
               "

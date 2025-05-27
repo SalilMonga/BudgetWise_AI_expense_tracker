@@ -100,7 +100,7 @@ export default function DeleteTransactionModal({ transaction, onClose, onConfirm
             Are you sure you want to delete this transaction? This action cannot be &quot;undone&quot;.
           </p>
 
-          <div className="bg-[var(--background)] p-4 rounded-lg">
+          <div className="bg-[var(--background-gray)] p-4 rounded-lg">
             <p className="font-medium text-[var(--text-light)]">
               {transaction.description}
             </p>
