@@ -45,7 +45,7 @@ export default function ProfilePopover({ onClose }: Props) {
     try {
       await updateProfile({ monthlyBudget, darkMode });
       setMessage("Profile updated!");
-    } catch (error) {
+    } catch {
       setMessage("Failed to update profile.");
     }
     setSaving(false);
@@ -123,7 +123,15 @@ export default function ProfilePopover({ onClose }: Props) {
       )}
       {/* Logout button */}
       <button
-        onClick={() => router.push("/")}
+        onClick={() => {
+          localStorage.removeItem("bw_greeted");
+          localStorage.removeItem("bw_user_email");
+          localStorage.removeItem("sb-access-token");
+          localStorage.removeItem("welcome_message_shown");
+          window.dispatchEvent(new Event("authchange"));
+          window.dispatchEvent(new Event("storage"));
+          router.push("/");
+        }}
         className="mt-6 w-full px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
       >
         Logout

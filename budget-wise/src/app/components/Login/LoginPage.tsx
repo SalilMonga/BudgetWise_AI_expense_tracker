@@ -13,9 +13,15 @@ export default function LoginPage() {
     e.preventDefault();
     // Store email in localStorage
     localStorage.setItem("bw_user_email", email);
+    // Simulate authentication by setting sb-access-token
+    localStorage.setItem("sb-access-token", "dummy-token");
+    // Notify other tabs/components
+    window.dispatchEvent(new Event("storage"));
+    // Notify current tab/components
+    window.dispatchEvent(new Event("authchange"));
     setTimeout(() => {
       router.push("/?view=dashboard");
-    }, 1000);
+    }, 100);
   };
 
   return (

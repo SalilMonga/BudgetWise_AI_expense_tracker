@@ -1,4 +1,4 @@
-import useSWR, { mutate as globalMutate } from "swr";
+import useSWR from "swr";
 import { Transaction } from "../types";
 
 // export interface APITransaction {
@@ -38,7 +38,7 @@ export function useTransactions() {
 
   const deleteTransaction = async (id: number) => {
     await fetch(`/api/transactions?id=${id}`, {
-      method: "DELETE"
+      method: "DELETE",
     });
     mutate(); // revalidate
   };

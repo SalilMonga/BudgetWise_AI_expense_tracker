@@ -15,8 +15,8 @@ const BodyWrapper = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <main className=" bg-[var(--background)] transition-colors duration-300 ease-in-out">
-      <div className="min-h-screen pt-14 bg-[var(--background-gray)] text-[var(--text-light)]">
+    <main className="bg-[var(--background-gray)] transition-colors duration-300 ease-in-out">
+      <div className="min-h-screen pt-14 text-[var(--text-light)]">
         <div className="max-w-7xl mx-auto px-6 md:px-8 mt-4">{children}</div>
       </div>
     </main>

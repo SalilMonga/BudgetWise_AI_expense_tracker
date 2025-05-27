@@ -1,15 +1,17 @@
 "use client";
 
+import { ReactNode } from "react";
+
 interface Props {
   title: string;
   value: string;
-  subtitle?: string;
+  subtitle?: ReactNode;
   change?: string;
 }
 
 export default function KpiCard({ title, value, subtitle, change }: Props) {
   return (
-    <div className="bg-[var(--background)] p-4 rounded-lg shadow-md flex flex-col">
+    <div className="bg-[var(--card-bg)] p-4 rounded-lg shadow-md flex flex-col">
       <span className="text-sm text-[var(--text-dark)]">{title}</span>
       <span className="text-2xl font-semibold text-[var(--text-light)]">
         {value}

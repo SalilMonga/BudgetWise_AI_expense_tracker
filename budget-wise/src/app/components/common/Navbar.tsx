@@ -2,10 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { FaSearch, FaBell, FaUser } from "react-icons/fa";
+import { FaBell, FaUser } from "react-icons/fa";
 import { FiCreditCard } from "react-icons/fi";
 import { useSearchParams } from "next/navigation";
-import ThemeToggle from "./ThemeToggle";
 import ProfilePopover from "../Profile/ProfilePopover";
 
 const Navbar = () => {

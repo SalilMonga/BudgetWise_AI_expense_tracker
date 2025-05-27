@@ -24,6 +24,26 @@ export default function DashboardPage() {
       (txn) => txn.date.startsWith(currentMonth) && txn.category !== "Income"
     )
     .reduce((sum, txn) => sum + Math.abs(txn.amount), 0);
+
+  // Calculate income for current month
+  const incomeThisMonth = transactions
+    .filter(
+      (txn) =>
+        txn.date.startsWith(currentMonth) && txn.category === "Income"
+    )
+    .reduce((sum, txn) => sum + Math.abs(txn.amount), 0);
+
+  // Find largest expense for current month
+  const largestExpense = transactions
+    .filter(
+      (txn) =>
+        txn.date.startsWith(currentMonth) && txn.category !== "Income"
+    )
+    .reduce((max, txn) => Math.max(max, Math.abs(txn.amount)), 0);
+
+  // Toggle state for the new KPI card
+  const [showIncome, setShowIncome] = useState(true);
+
   const savingsGoal = 5000;
   const saved = 3000;
 
@@ -79,18 +99,21 @@ export default function DashboardPage() {
       <div className="container mx-auto px-4 py-8 space-y-12">
         {/* ─── KPI ROW ────────────────────────────────────── */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          {/* Toggleable Income/Largest Expense KPI Card */}
           <KpiCard
-            title="Monthly Budget"
-            value={`$${((profile?.monthlyBudget ?? 0) - spent).toLocaleString(
-              undefined,
-              { minimumFractionDigits: 2 }
-            )}`}
+            title={showIncome ? "Income This Month" : "Largest Expense"}
+            value={
+              showIncome
+                ? `$${incomeThisMonth.toLocaleString(undefined, { minimumFractionDigits: 2 })}`
+                : `$${largestExpense.toLocaleString(undefined, { minimumFractionDigits: 2 })}`
+            }
             subtitle={
-              loadingBudget
-                ? "Loading..."
-                : `Original: $${
-                    profile?.monthlyBudget?.toLocaleString() ?? "0"
-                  }`
+              <button
+                className="text-xs text-blue-400 underline hover:text-blue-300 transition"
+                onClick={() => setShowIncome((v) => !v)}
+              >
+                {showIncome ? "Show Largest Expense" : "Show Income This Month"}
+              </button>
             }
           />
           <KpiCard
@@ -102,8 +125,8 @@ export default function DashboardPage() {
               loadingBudget
                 ? ""
                 : `${Math.round(
-                    (spent / (profile?.monthlyBudget ?? 1)) * 100
-                  )}% of budget`
+                  (spent / (profile?.monthlyBudget ?? 1)) * 100
+                )}% of budget`
             }
           />
           <KpiCard
@@ -121,6 +144,8 @@ export default function DashboardPage() {
             loading={loadingBudget}
           />
           <PinnedGoalWidget />
+          {/* Add a placeholder for alignment if needed */}
+          <div className="hidden sm:block" />
         </div>
 
         {/* ─── TRANSACTIONS & REPORTS ──────────────────────── */}

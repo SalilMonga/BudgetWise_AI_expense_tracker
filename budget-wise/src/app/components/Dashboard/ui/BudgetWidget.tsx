@@ -16,23 +16,22 @@ export function BudgetWidget({ budget, spent, loading }: Props) {
   const remaining = totalBudget - totalSpent;
 
   return (
-    <Card className="flex flex-col p-4 h-full">
+    <Card className="space-y-2">
       <h3 className="text-lg font-semibold text-[var(--text-light)]">
         Monthly Budget
       </h3>
-      <p className="mt-2 text-2xl font-bold text-[var(--text-light)]">
-        ${loading ? "..." : totalBudget}
+      <p className="text-md font-medium truncate text-[var(--text-light)]">
+        Remaining: ${remaining.toLocaleString(undefined, { minimumFractionDigits: 2 })}
       </p>
-
-      {/* full‑width bar with percentage */}
-      <div className="mt-4 w-full">
-        <ProgressBar
-          value={remaining}
-          max={totalBudget}
-          showPercentage
-          className="w-full"
-        />
+      <div className="flex justify-end gap-6 text-sm text-[var(--text-dark)] mb-1">
+        <span>Original: <span className="text-[var(--text-light)]">${totalBudget.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span></span>
+        <span>Spent: <span className="text-red-400">${totalSpent.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span></span>
       </div>
+      <ProgressBar
+        value={remaining}
+        max={totalBudget}
+        showPercentage
+      />
     </Card>
   );
 }

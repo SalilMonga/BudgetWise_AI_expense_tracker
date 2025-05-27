@@ -8,30 +8,32 @@
 :root {
   --primary-purple: #7f5af0;
 
-  --background: #faf8f0;
-  --background-gray: #f4f1e6;
-  --text-light: #111827;
-  --text-dark: #6b7280;
+  --background: #fff;
+  --background-gray: #f3f4f6;
+  --text-light: #222;
+  --text-dark: #555;
 
   --green: #16a34a;
   --red: #dc2626;
   --yellow: #facc15;
   --blue: #2563eb;
-  --fill: #f97316;
-  --fill-hover: #ea580c;
+  --fill: #6366f1;
+  --fill-hover: #4f46e5;
+  --card-bg: #fff;
 }
 
 html,
 body {
-  background-color: var(--background) !important;
+  background-color: var(--background-gray) !important;
   transition: background-color 0.3s ease-in-out;
 }
 
 html.dark {
-  --background: #0f0f0f;
-  --background-gray: #1a1a1a;
-  --text-light: #e5e7eb;
-  --text-dark: #9ca3af;
-  --fill: var(--primary-purple);
-  --fill-hover: #6241c6;
+  --background: #0f172a;
+  --background-gray: #18181b;
+  --text-light: #f3f4f6;
+  --text-dark: #a1a1aa;
+  --fill: #6366f1;
+  --fill-hover: #4f46e5;
+  --card-bg: #111;
 }

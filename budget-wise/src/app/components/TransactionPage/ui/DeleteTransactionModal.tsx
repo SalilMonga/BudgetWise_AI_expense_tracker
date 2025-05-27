@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { Transaction } from "@/types";
 import { Goal } from "@/types";
 
@@ -19,20 +19,9 @@ interface GoalImpact {
 
 export default function DeleteTransactionModal({ transaction, onClose, onConfirm }: Props) {
   const backdropRef = useRef<HTMLDivElement>(null);
-  const [goals, setGoals] = useState<Goal[]>([]);
   const [impact, setImpact] = useState<GoalImpact | null>(null);
 
-  useEffect(() => {
-    // Fetch goals when modal opens
-    fetch("/api/goals")
-      .then((res) => res.json())
-      .then((goals: Goal[]) => {
-        setGoals(goals);
-        calculateImpact(goals);
-      });
-  }, []);
-
-  const calculateImpact = (goals: Goal[]) => {
+  const calculateImpact = useCallback((goals: Goal[]) => {
     // Only calculate impact for recurring transactions
     if (transaction.status !== "Recurring") return;
 
@@ -84,7 +73,16 @@ export default function DeleteTransactionModal({ transaction, onClose, onConfirm
     } else {
       setImpact(bestImpact);
     }
-  };
+  }, [transaction.status, transaction.amount]);
+
+  useEffect(() => {
+    // Fetch goals when modal opens
+    fetch("/api/goals")
+      .then((res) => res.json())
+      .then((goals: Goal[]) => {
+        calculateImpact(goals);
+      });
+  }, [calculateImpact]);
 
   return (
     <div
@@ -99,7 +97,7 @@ export default function DeleteTransactionModal({ transaction, onClose, onConfirm
 
         <div className="space-y-4">
           <p className="text-[var(--text-light)]">
-            Are you sure you want to delete this transaction?
+            Are you sure you want to delete this transaction? This action cannot be &quot;undone&quot;.
           </p>
 
           <div className="bg-[var(--background)] p-4 rounded-lg">
@@ -114,7 +112,7 @@ export default function DeleteTransactionModal({ transaction, onClose, onConfirm
           {impact && (
             <div className="bg-white dark:bg-green-900/20 p-4 rounded-lg border border-green-400 dark:border-green-800">
               <h4 className="font-medium text-gray-900 dark:text-green-200 mb-2">
-                Impact on "{impact.goal.title}"
+                Impact on &quot;{impact.goal.title}&quot;
                 {impact.goal.pinned && (
                   <span className="ml-2 text-xs bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200 px-2 py-0.5 rounded-full">
                     Pinned Goal
@@ -123,13 +121,13 @@ export default function DeleteTransactionModal({ transaction, onClose, onConfirm
               </h4>
               <ul className="space-y-2 text-sm text-gray-800 dark:text-green-300">
                 <li>
-                  • You'll reach your goal {Math.round(impact.monthsSaved)} months sooner
+                  • You&apos;ll reach your goal {Math.round(impact.monthsSaved)} months sooner
                 </li>
                 <li>
                   • Monthly savings needed will decrease from ${impact.currentMonthlySavings.toFixed(2)} to ${impact.newMonthlySavings.toFixed(2)}
                 </li>
                 <li>
-                  • You'll save ${Math.abs(transaction.amount).toFixed(2)} per month
+                  • You&apos;ll save ${Math.abs(transaction.amount).toFixed(2)} per month
                 </li>
               </ul>
             </div>

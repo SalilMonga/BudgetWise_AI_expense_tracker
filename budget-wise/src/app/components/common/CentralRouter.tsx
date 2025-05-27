@@ -2,6 +2,8 @@
 
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 // import { ReportsContainer } from "../../components/reports/ReportsContainer";
 
 // Dynamically import your views
@@ -31,6 +33,13 @@ export default function CentralRouter() {
   // We'll read the `view` query parameter from URL, e.g. /?view=transactions or /?view=other
   const searchParams = useSearchParams();
   const view = searchParams.get("view");
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!view || !["transactions", "dashboard", "goals", "reports", "profile"].includes(view)) {
+      router.replace("/?view=dashboard");
+    }
+  }, [view, router]);
 
   switch (view) {
     case "transactions":

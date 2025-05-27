@@ -7,7 +7,9 @@ import { useProfile } from "../../../hooks/useProfile";
 
 export default function ProfilePage() {
   const { profile, isLoading, updateProfile } = useProfile();
-  const [monthlyBudget, setMonthlyBudget] = useState(profile?.monthlyBudget ?? 2450);
+  const [monthlyBudget, setMonthlyBudget] = useState(
+    profile?.monthlyBudget ?? 2450
+  );
   const [darkMode, setDarkMode] = useState(profile?.darkMode ?? true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
@@ -18,7 +20,7 @@ export default function ProfilePage() {
     try {
       await updateProfile({ monthlyBudget, darkMode });
       setMessage("Profile updated!");
-    } catch (error) {
+    } catch {
       setMessage("Failed to update profile.");
     }
     setSaving(false);
@@ -28,10 +30,14 @@ export default function ProfilePage() {
 
   return (
     <div className="max-w-xl mx-auto p-8 space-y-6">
-      <h2 className="text-2xl font-semibold mb-4 text-[var(--text-light)]">Profile</h2>
+      <h2 className="text-2xl font-semibold mb-4 text-[var(--text-light)]">
+        Profile
+      </h2>
       <Card className="space-y-6">
         <div>
-          <label className="block text-sm font-medium mb-1 text-[var(--text-dark)]">Monthly Budget</label>
+          <label className="block text-sm font-medium mb-1 text-[var(--text-dark)]">
+            Monthly Budget
+          </label>
           <input
             type="number"
             value={monthlyBudget}
@@ -41,7 +47,9 @@ export default function ProfilePage() {
           />
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-sm font-medium text-[var(--text-dark)]">Dark Mode</span>
+          <span className="text-sm font-medium text-[var(--text-dark)]">
+            Dark Mode
+          </span>
           <ThemeToggle checked={darkMode} onChange={setDarkMode} />
         </div>
         <button
@@ -51,8 +59,10 @@ export default function ProfilePage() {
         >
           {saving ? "Saving..." : "Save Changes"}
         </button>
-        {message && <div className="text-green-500 text-sm mt-2">{message}</div>}
+        {message && (
+          <div className="text-green-500 text-sm mt-2">{message}</div>
+        )}
       </Card>
     </div>
   );
-} 
+}

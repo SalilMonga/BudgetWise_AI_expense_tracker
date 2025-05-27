@@ -90,65 +90,67 @@ export default function ReportsPage({ isWidget = false }: ReportsPageProps) {
 
   // ───── FULL PAGE MODE ──────────────
   return (
-    <div className="min-h-screen bg-[var(--background-gray)] text-[var(--text-light)]">
-      <h2 className="text-2xl font-bold mb-6">Spending Reports</h2>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Bar Chart */}
-        <div className="bg-[var(--background)] p-4 rounded-lg shadow-md h-[450px]">
-          <h3 className="text-lg font-semibold mb-2">Spending by Category</h3>
-          <div className="w-full h-[400px]">
-            <ResponsiveBar
-              data={barData}
-              keys={["amount"]}
-              indexBy="category"
-              margin={{ top: 20, right: 30, bottom: 50, left: 60 }}
-              padding={0.3}
-              colors={{ datum: "data.color" }}
-              theme={{
-                axis: {
-                  ticks: { text: { fill: "var(--text-light)" } },
-                  legend: { text: { fill: "var(--text-light)" } },
-                },
-                tooltip: {
-                  container: {
-                    background: "var(--background-gray)",
-                    color: "var(--text-light)",
+    <div className="min-h-screen bg-[var(--background-gray)] text-[var(--text-light)] flex justify-center">
+      <div className="w-full max-w-7xl px-4 py-8">
+        <h2 className="text-2xl font-bold mb-6">Spending Reports</h2>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Bar Chart */}
+          <Card className="h-[450px]">
+            <h3 className="text-lg font-semibold mb-2">Spending by Category</h3>
+            <div className="w-full h-[400px]">
+              <ResponsiveBar
+                data={barData}
+                keys={["amount"]}
+                indexBy="category"
+                margin={{ top: 20, right: 30, bottom: 50, left: 60 }}
+                padding={0.3}
+                colors={{ datum: "data.color" }}
+                theme={{
+                  axis: {
+                    ticks: { text: { fill: "var(--text-light)" } },
+                    legend: { text: { fill: "var(--text-light)" } },
                   },
-                },
-              }}
-              axisBottom={{ tickRotation: -20 }}
-              axisLeft={{
-                legend: "Amount",
-                legendPosition: "middle",
-                legendOffset: -40,
-              }}
-            />
-          </div>
-        </div>
+                  tooltip: {
+                    container: {
+                      background: "var(--background-gray)",
+                      color: "var(--text-light)",
+                    },
+                  },
+                }}
+                axisBottom={{ tickRotation: -20 }}
+                axisLeft={{
+                  legend: "Amount",
+                  legendPosition: "middle",
+                  legendOffset: -40,
+                }}
+              />
+            </div>
+          </Card>
 
-        {/* Pie Chart */}
-        <div className="bg-[var(--background)] p-4 rounded-lg shadow-md h-[450px]">
-          <h3 className="text-lg font-semibold mb-2">Spending Distribution</h3>
-          <div className="w-full h-[400px]">
-            <ResponsivePie
-              data={pieData}
-              margin={{ top: 20, right: 20, bottom: 40, left: 20 }}
-              innerRadius={0.5}
-              padAngle={1}
-              cornerRadius={4}
-              activeOuterRadiusOffset={8}
-              colors={{ datum: "data.color" }}
-              theme={{
-                labels: { text: { fill: "var(--text-light)" } },
-                tooltip: {
-                  container: {
-                    background: "var(--background-gray)",
-                    color: "var(--text-light)",
+          {/* Pie Chart */}
+          <Card className="h-[450px]">
+            <h3 className="text-lg font-semibold mb-2">Spending Distribution</h3>
+            <div className="w-full h-[400px]">
+              <ResponsivePie
+                data={pieData}
+                margin={{ top: 20, right: 20, bottom: 40, left: 20 }}
+                innerRadius={0.5}
+                padAngle={1}
+                cornerRadius={4}
+                activeOuterRadiusOffset={8}
+                colors={{ datum: "data.color" }}
+                theme={{
+                  labels: { text: { fill: "var(--text-light)" } },
+                  tooltip: {
+                    container: {
+                      background: "var(--background-gray)",
+                      color: "var(--text-light)",
+                    },
                   },
-                },
-              }}
-            />
-          </div>
+                }}
+              />
+            </div>
+          </Card>
         </div>
       </div>
     </div>
